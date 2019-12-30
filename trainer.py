@@ -18,7 +18,7 @@ def main():
 
     # pre-define meta path
     meta_path = MetaPath(graph)
-    meta_path.add([(Alarm, Kpi), ('*1-8', Instance), (Kpi, Alarm)], 10)
+    meta_path.add([(Alarm, Kpi), ('*1-3', Instance), (Kpi, Alarm)], 10)
 
     # generate route using random walk
     routes = meta_path.random_walk()

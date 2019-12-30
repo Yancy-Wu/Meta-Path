@@ -2,6 +2,7 @@
     visualize.py
 '''
 
+import json
 import torch
 import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
@@ -25,10 +26,10 @@ def main():
     model: SimiModel = saved['model']
 
     # fit embeddings.
-    embs = model.embs(torch.LongTensor(range(0, model.embs.num_embeddings)))
-    embs = embs.cpu().detach().numpy()
+    origin_embs = model.embs(torch.LongTensor(range(0, model.embs.num_embeddings)))
+    origin_embs = origin_embs.cpu().detach().numpy()
     tsne = TSNE()
-    embs = tsne.fit_transform(embs)
+    embs = tsne.fit_transform(origin_embs)
 
     # draw dots.
     plt.switch_backend('agg')
@@ -37,7 +38,18 @@ def main():
             continue
         vertex = tokenizer.decode([i])[0]
         plt.scatter(*dot, c=COLOR[vertex.category])
-    plt.savefig('testblueline.jpg')
+    plt.savefig('visual.jpg')
+
+    # dump embs to json.
+    with open('./embs.json', 'w') as out:
+        for i, emb in enumerate(origin_embs):
+            vertex = tokenizer.decode([i])[0]
+            info = {
+                'id': vertex.vid,
+                'category': vertex.category,
+                'emb': emb.tolist()
+            }
+            out.write(json.dumps(info) + '\n')
 
 if __name__ == '__main__':
     main()

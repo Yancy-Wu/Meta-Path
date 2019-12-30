@@ -20,6 +20,11 @@ class Vertex:
         ''' return vertex category '''
         return self.__class__.__name__
 
+    @property
+    def vid(self):
+        ''' return vertex vid [NOTE: not uuid] '''
+        return self.uuid.split('|')[1]
+
 class Edge:
     '''
         edge define.
@@ -29,8 +34,13 @@ class Edge:
 
     @property
     def category(self):
-        ''' return vertex category '''
+        ''' return edge category '''
         return self.__class__.__name__
+
+    @property
+    def mid(self):
+        ''' return edge mid [NOTE: not uuid] '''
+        return self.uuid.split('|')[1]
 
 class Route:
     '''
